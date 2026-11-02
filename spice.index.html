@@ -35,6 +35,24 @@ th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;line-height:
 th{background:var(--main);color:#fff;font-weight:700;white-space:nowrap;}
 tbody tr:nth-child(even){background:#faf8f6;}
 .lead{margin-bottom:14px;line-height:1.95;font-size:15.5px;}
+/* ---- スマホ：表を縦積みカードに切り替える ---- */
+@media(max-width:700px){
+  main{padding:12px 10px 8px;}
+  .slide{padding:18px 16px 22px;border-radius:12px;}
+  h2{font-size:20px;}
+  li{font-size:15.5px;}
+  .tblwrap{overflow-x:visible;}
+  table{min-width:0;display:block;}
+  thead{display:none;}
+  tbody,tr,td{display:block;width:100%;}
+  tbody tr{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;background:#fff;}
+  tbody tr:nth-child(even){background:#fff;}
+  td{border:none;border-bottom:1px solid var(--line);padding:9px 12px;line-height:1.85;}
+  td:last-child{border-bottom:none;}
+  td:first-child{background:#f3ebe2;color:var(--main-dark);font-weight:700;font-size:15.5px;}
+  td:not(:first-child)::before{content:attr(data-label);display:block;font-size:11px;letter-spacing:.08em;color:var(--sub);margin-bottom:3px;}
+  .blank{min-width:3.2em;}
+}
 .blank{display:inline-block;min-width:4.2em;text-align:center;padding:1px 8px;margin:0 1px;cursor:pointer;user-select:none;background:#efe3d6;color:transparent;border-bottom:2px dashed var(--main-light);border-radius:4px;transition:background .15s,color .15s;}
 .blank:hover{background:#e3d2bf;}
 .blank:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
@@ -466,7 +484,7 @@ function render(){
     if(s.type === 'p'){ h += '<ul>'+li(s.items)+'</ul>'; }
     else if(s.type === 'tbl'){
       h += '<div class="tblwrap"><table><thead><tr>'+s.head.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'
-         + s.rows.map(r=>'<tr>'+r.map(c=>'<td>'+blanks(c)+'</td>').join('')+'</tr>').join('')
+         + s.rows.map(r=>'<tr>'+r.map((c,i)=>'<td data-label="'+s.head[i]+'">'+blanks(c)+'</td>').join('')+'</tr>').join('')
          + '</tbody></table></div>';
     }
     if(s.note) h += '<div class="note">'+s.note+'</div>';
