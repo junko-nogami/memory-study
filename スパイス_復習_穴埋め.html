@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スパイスとハーブ 復習</title>
+<style>
+:root{
+  --main:#8a5a2b; --main-dark:#6b4420; --main-light:#b08050; --accent:#c8a24a;
+  --bg:#f8f5f1; --card:#ffffff; --text:#2c2724; --sub:#6b625e; --line:#e6ddd4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;-webkit-text-size-adjust:100%;}
+header{background:var(--main);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;}
+header .ch{font-size:12px;letter-spacing:.12em;opacity:.85;}
+header .ttl{font-size:15px;font-weight:700;}
+header .right{margin-left:auto;text-align:right;font-variant-numeric:tabular-nums;}
+header .timer{font-size:15px;font-weight:700;}
+header .count{font-size:12px;opacity:.9;}
+main{flex:1;display:flex;justify-content:center;padding:18px 14px 8px;}
+.slide{width:100%;max-width:860px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);padding:26px 28px 30px;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){.slide{animation:none;}}
+.eyebrow{display:inline-block;font-size:11px;letter-spacing:.14em;color:var(--main);background:#f3ebe2;border-radius:20px;padding:4px 12px;margin-bottom:12px;font-weight:700;}
+h2{font-size:23px;line-height:1.4;color:var(--main-dark);border-bottom:3px solid var(--main);padding-bottom:9px;margin-bottom:18px;}
+ul{list-style:none;}
+li{position:relative;padding-left:20px;margin-bottom:11px;line-height:1.95;font-size:16px;}
+li::before{content:"";position:absolute;left:2px;top:.78em;width:8px;height:8px;border-radius:2px;background:var(--main-light);}
+.note{margin-top:16px;padding:11px 14px;font-size:13.5px;line-height:1.75;background:#faf6ee;border-left:4px solid var(--accent);border-radius:0 6px 6px 0;color:#5c4f38;}
+.note b{color:#8a6a20;}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;line-height:1.9;vertical-align:top;}
+th{background:var(--main);color:#fff;font-weight:700;white-space:nowrap;}
+tbody tr:nth-child(even){background:#faf8f6;}
+.lead{margin-bottom:14px;line-height:1.95;font-size:15.5px;}
+.blank{display:inline-block;min-width:4.2em;text-align:center;padding:1px 8px;margin:0 1px;cursor:pointer;user-select:none;background:#efe3d6;color:transparent;border-bottom:2px dashed var(--main-light);border-radius:4px;transition:background .15s,color .15s;}
+.blank:hover{background:#e3d2bf;}
+.blank:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+.blank.open{background:transparent;color:var(--main-dark);font-weight:700;border-bottom:2px solid var(--accent);cursor:default;}
+.blank.hint{animation:pulse .9s ease;}
+@keyframes pulse{0%,100%{background:#efe3d6;}50%{background:var(--accent);}}
+@media (prefers-reduced-motion:reduce){.blank.hint{animation:none;}}
+.cover{text-align:center;padding:42px 20px;}
+.cover .sub{font-size:14px;letter-spacing:.2em;color:var(--main-light);margin-bottom:14px;}
+.cover h1{font-size:30px;color:var(--main-dark);line-height:1.4;margin-bottom:22px;}
+.cover .idx{display:inline-block;text-align:left;background:#faf8f6;border:1px solid var(--line);border-radius:10px;padding:16px 22px;font-size:15px;line-height:2;}
+.cover .idx b{color:var(--main);}
+.cover .howto{margin-top:20px;font-size:14px;line-height:1.9;color:var(--sub);text-align:left;display:inline-block;max-width:560px;}
+footer{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:10px 14px 14px;}
+.tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.tools button{font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--main);background:#fff;color:var(--main);padding:8px 15px;border-radius:22px;transition:.15s;}
+.tools button:hover{background:var(--main);color:#fff;}
+.tools button.primary{background:var(--main);color:#fff;}
+.tools button.primary:hover{background:var(--main-dark);border-color:var(--main-dark);}
+.tools button:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+.nav{display:flex;align-items:center;justify-content:center;gap:14px;}
+.nav button{font-family:inherit;font-size:15px;cursor:pointer;border:none;background:var(--main);color:#fff;width:40px;height:40px;border-radius:50%;}
+.nav button:disabled{background:#d4c9bd;cursor:default;}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:520px;}
+.dots .dot{width:9px;height:9px;min-width:0;flex:none;border-radius:50%;background:#d9cdc0;border:none;padding:0;cursor:pointer;}
+.dots .dot.active{background:var(--main);transform:scale(1.35);}
+.dots .dot:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;}
+.modal.on{display:flex;}
+.modal .box{background:#fff;border-radius:14px;max-width:560px;width:100%;max-height:82vh;overflow:auto;padding:22px 24px;}
+.modal h3{font-size:18px;color:var(--main-dark);margin-bottom:12px;}
+.modal table{min-width:0;font-size:14px;}
+.modal textarea{width:100%;height:120px;margin-top:12px;font-family:ui-monospace,monospace;font-size:12px;padding:8px;border:1px solid var(--line);border-radius:8px;}
+.modal .close{margin-top:14px;}
+.warn{font-size:13px;color:#8a3a3a;background:#fcf0ef;border-left:4px solid #c05a52;padding:10px 12px;border-radius:0 6px 6px 0;margin-top:12px;line-height:1.7;}
+</style></head>
+<body>
+<header>
+  <div>
+    <div class="ch">記憶保持研究　復習用</div>
+    <div class="ttl">スパイスとハーブ</div>
+  </div>
+  <div class="right">
+    <div class="timer">本日 <span id="tmr">0:00</span></div>
+    <div class="count"><span id="cur">1</span> / <span id="tot">1</span></div>
+  </div>
+</header>
+<main><div class="slide" id="slide"></div></main>
+<footer>
+  <div class="tools">
+    <button id="btnNext" class="primary">次のカッコを開く</button>
+    <button id="btnReset">このスライドをリセット</button>
+    <button id="btnLog">学習記録</button>
+  </div>
+  <div class="nav">
+    <button id="prev" aria-label="前のスライド">◀</button>
+    <div class="dots" id="dots"></div>
+    <button id="next" aria-label="次のスライド">▶</button>
+  </div>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h3>学習記録</h3>
+    <div id="logTable"></div>
+    <textarea id="logText" readonly></textarea>
+    <div class="warn">この記録はこのブラウザの中だけに保存されます。毎日<b>同じ端末・同じブラウザ</b>で開いてください。シークレットウィンドウでは記録が残りません。</div>
+    <div class="tools close"><button id="btnCopy">記録をコピー</button><button id="btnClose" class="primary">閉じる</button></div>
+  </div>
+</div>
+
+<script>
+const SLIDES = [
+ {
+  "type": "cover",
+  "sub": "記憶保持研究　学習資料",
+  "title": "スパイスとハーブの基礎知識",
+  "index": [
+   "<b>1.</b> スパイスとハーブの基礎",
+   "<b>2.</b> 代表的なスパイス",
+   "<b>3.</b> 代表的なハーブ",
+   "<b>4.</b> 混合スパイス・混合ハーブ",
+   "<b>5.</b> 香辛料の歴史"
+  ],
+  "howto": "毎日10分、このページで復習してください。カッコをクリックすると答えが出ます。まず自分で思い出してから開くようにしてください。学習時間は自動で記録されます。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "1 基礎",
+  "title": "用語の定義",
+  "items": [
+   "スパイス（香辛料）は、植物の[[種子・果実・樹皮・根・つぼみ]]など、かたい部分を利用するものが多い",
+   "ハーブ（香草）は、主に[[葉や花]]など、やわらかい部分を利用する",
+   "両者に厳密な区別はなく、[[コリアンダー]]のように、葉はハーブ、種子はスパイスとして使う植物もある"
+  ],
+  "note": "<b>区別は使う部位で考える：</b>同じ植物でも、やわらかい部分を使えばハーブ、かたい部分を使えばスパイスと呼ばれます。"
+ },
+ {
+  "type": "tbl",
+  "eyebrow": "1 基礎",
+  "title": "香辛料の4つの作用",
+  "head": [
+   "作用",
+   "はたらき",
+   "代表例"
+  ],
+  "rows": [
+   [
+    "[[賦香作用]]",
+    "料理に好ましい香りをつける",
+    "[[バニラ、シナモン]]"
+   ],
+   [
+    "[[矯臭作用]]",
+    "肉や魚の臭みを消す・やわらげる",
+    "[[ローリエ、ローズマリー]]"
+   ],
+   [
+    "[[辛味作用]]",
+    "辛味や刺激を与える",
+    "[[コショウ、唐辛子]]"
+   ],
+   [
+    "[[着色作用]]",
+    "料理に色をつける",
+    "[[ターメリック、サフラン]]"
+   ]
+  ],
+  "note": "<b>4つだけ：</b>賦香・矯臭・辛味・着色。とろみをつける作用は香辛料の役割に含まれません。"
+ },
+ {
+  "type": "tbl",
+  "eyebrow": "1 基礎",
+  "title": "利用する部位による分類",
+  "head": [
+   "部位",
+   "代表的なスパイス"
+  ],
+  "rows": [
+   [
+    "[[種子]]",
+    "コリアンダー、クミン、マスタード、フェンネル、ナツメグ"
+   ],
+   [
+    "[[果実]]",
+    "コショウ、唐辛子、カルダモン、バニラ、八角"
+   ],
+   [
+    "[[樹皮]]",
+    "シナモン"
+   ],
+   [
+    "[[根・根茎]]",
+    "ショウガ、ターメリック、ワサビ"
+   ],
+   [
+    "[[つぼみ（花蕾）]]",
+    "クローブ（丁子）"
+   ],
+   [
+    "[[めしべ（柱頭）]]",
+    "サフラン"
+   ],
+   [
+    "[[仮種皮]]",
+    "メース（ナツメグの種子を包む赤い網状の部分）"
+   ]
+  ],
+  "note": "<b>ナツメグだけ注意：</b>果実ではなく<b>種子</b>です。その種子を包む仮種皮がメースなので、ナツメグとメースは同じ植物から採れます。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "2 スパイス",
+  "title": "コショウ・唐辛子・パプリカ",
+  "items": [
+   "コショウの原産地は[[インド南西部]]で、「[[スパイスの王様]]」と呼ばれる",
+   "コショウの辛味成分は[[ピペリン]]である",
+   "黒コショウは[[未熟果を果皮ごと乾燥]]させたもの、白コショウは[[完熟果の外皮を除いて乾燥]]させたものである",
+   "唐辛子の原産地は[[中南米]]で、辛味成分は[[カプサイシン]]である",
+   "唐辛子をヨーロッパへ伝えたのは[[コロンブス]]である",
+   "パプリカは[[辛味のない唐辛子]]の一種で、[[ハンガリー]]料理を代表する"
+  ],
+  "note": "<b>黒と白の違いは熟度：</b>黒は未熟なうちに皮ごと、白は完熟させてから皮をむきます。皮に辛味と香りが多いため、黒のほうが刺激が強くなります。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "2 スパイス",
+  "title": "サフラン・バニラ・カルダモン",
+  "items": [
+   "サフランは[[世界一高価]]なスパイスで、1gを得るのに約[[150〜200個]]の花が必要である",
+   "サフランを使う代表的な料理は[[パエリア、ブイヤベース]]である",
+   "バニラの原産地は[[メキシコ]]で、[[ラン科]]の植物である",
+   "採取直後のバニラの果実に香りはなく、[[キュアリング（発酵・乾燥）]]によって香り成分[[バニリン]]が生じる",
+   "カルダモンの原産地は[[インド]]で、「[[スパイスの女王]]」と呼ばれ、[[ショウガ科]]に属する"
+  ],
+  "note": "<b>王様と女王：</b>コショウが王様、カルダモンが女王。高価さでいえばサフランが世界一です。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "2 スパイス",
+  "title": "クローブ・ナツメグ・メース",
+  "items": [
+   "クローブ（丁子）の原産地は[[モルッカ諸島]]で、[[開花前のつぼみ]]を乾燥させたものである",
+   "クローブの主成分は[[オイゲノール]]で、[[歯科の鎮痛]]に用いられてきた",
+   "ナツメグは[[ニクズク]]の種子で、[[ひき肉料理]]の臭み消しに使う",
+   "メースはナツメグの種子を包む[[赤い網状の仮種皮]]で、ナツメグより上品な香りをもつ"
+  ],
+  "note": "<b>3つとも同じ産地：</b>クローブ・ナツメグ・メースはいずれもモルッカ諸島が原産。ナツメグとメースは同じ植物の種子と仮種皮です。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "2 スパイス",
+  "title": "シナモン・ターメリック・八角",
+  "items": [
+   "シナモンには、スリランカ産の[[セイロンシナモン]]と、[[中国・ベトナム]]産のカシアがある",
+   "ターメリック（ウコン）の原産地は[[インド]]で、[[ショウガ科]]に属する",
+   "ターメリックの黄色色素[[クルクミン]]が[[カレー粉の色]]のもとになり、[[たくあん]]の着色にも使われる",
+   "八角（スターアニス）は[[中国]]原産の星形の果実で、[[五香粉]]の主材料である"
+  ],
+  "note": "<b>ショウガ科が2つ：</b>カルダモンとターメリックはどちらもショウガ科です。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "2 スパイス",
+  "title": "日本と中国のスパイス",
+  "items": [
+   "ワサビと山椒はいずれも[[日本]]原産である",
+   "ワサビは[[アブラナ科]]で、辛味成分は[[アリルイソチオシアネート]]である",
+   "山椒は[[ミカン科]]で、辛味成分は[[サンショオール]]である",
+   "花椒（ホアジャオ）は中国のスパイスで、四川料理の「[[麻（しびれ）]]」を担う"
+  ],
+  "note": "<b>山椒と花椒は別物：</b>山椒は日本のミカン科、花椒は中国で四川料理のしびれを担います。名前が似ているので混同しないように。"
+ },
+ {
+  "type": "tbl",
+  "eyebrow": "3 ハーブ",
+  "title": "シソ科のハーブ",
+  "lead": "バジル、オレガノ、ローズマリー、タイム、セージ、ミントはいずれも[[シソ科]]である。",
+  "head": [
+   "名称",
+   "特徴"
+  ],
+  "rows": [
+   [
+    "バジル",
+    "イタリア料理の代表。[[ジェノベーゼ]]ソースの材料"
+   ],
+   [
+    "オレガノ",
+    "[[トマト]]と相性がよく、ピザに欠かせない"
+   ],
+   [
+    "ローズマリー",
+    "[[地中海]]原産。肉の臭み消しに強い"
+   ],
+   [
+    "タイム",
+    "煮込み料理や[[ブーケガルニ]]に使う"
+   ],
+   [
+    "セージ",
+    "肉の臭み消し。[[ソーセージ]]の風味づけ"
+   ],
+   [
+    "ミント",
+    "香り成分は[[メントール]]"
+   ]
+  ],
+  "note": "<b>まとめて覚える：</b>よく使うハーブの多くはシソ科です。例外（セリ科・キク科・クスノキ科）のほうを覚えるほうが早道です。"
+ },
+ {
+  "type": "tbl",
+  "eyebrow": "3 ハーブ",
+  "title": "セリ科・キク科・クスノキ科のハーブ",
+  "lead": "パセリ、チャービル、ディル、コリアンダーはいずれも[[セリ科]]である。",
+  "head": [
+   "名称",
+   "科",
+   "特徴"
+  ],
+  "rows": [
+   [
+    "パセリ",
+    "セリ科",
+    "付け合わせのほか、刻んで料理に散らす"
+   ],
+   [
+    "チャービル",
+    "セリ科",
+    "繊細な香りから「[[美食家のパセリ]]」と呼ばれる"
+   ],
+   [
+    "ディル",
+    "セリ科",
+    "魚料理に合い、[[北欧]]料理でよく使われる"
+   ],
+   [
+    "コリアンダー",
+    "セリ科",
+    "葉は[[パクチー・香菜]]としてハーブ、種子はスパイスとして使う"
+   ],
+   [
+    "タラゴン",
+    "[[キク科]]",
+    "フランス料理の基本。[[ベアルネーズ]]ソースに使う"
+   ],
+   [
+    "ローリエ（月桂樹）",
+    "[[クスノキ科]]",
+    "煮込みの香りづけ。古代ギリシャでは[[月桂冠]]に使われた"
+   ]
+  ],
+  "note": "<b>シソ科でないのはこの6つ：</b>パセリ・チャービル・ディル・コリアンダー（セリ科）、タラゴン（キク科）、ローリエ（クスノキ科）。"
+ },
+ {
+  "type": "tbl",
+  "eyebrow": "4 混合スパイス",
+  "title": "混合スパイス・混合ハーブ",
+  "head": [
+   "名称",
+   "国・地域",
+   "内容"
+  ],
+  "rows": [
+   [
+    "カレー粉",
+    "[[イギリス]]",
+    "インドにはもともと存在せず、イギリスで混合スパイスとして生まれた"
+   ],
+   [
+    "ガラムマサラ",
+    "[[インド]]",
+    "「[[熱い（辛い）混合物]]」の意味。料理の[[仕上げ]]に加えることが多い"
+   ],
+   [
+    "五香粉",
+    "[[中国]]",
+    "[[八角、クローブ、シナモン、花椒、フェンネル]]などを配合"
+   ],
+   [
+    "チリパウダー",
+    "[[アメリカ]]",
+    "唐辛子に[[クミン、オレガノ]]などを混ぜたもの"
+   ],
+   [
+    "ブーケガルニ",
+    "フランス",
+    "[[パセリの茎、タイム、ローリエ]]などを[[束ね]]、煮込みの香りづけに使う"
+   ],
+   [
+    "フィーヌゼルブ",
+    "フランス",
+    "[[パセリ、チャービル、タラゴン、チャイブ]]の4種を刻んで混ぜたもの"
+   ],
+   [
+    "七味唐辛子",
+    "日本",
+    "江戸時代に[[江戸・浅草]]で生まれたとされる"
+   ]
+  ],
+  "note": "<b>刻むか束ねるか：</b>フィーヌゼルブは刻んで混ぜ、ブーケガルニは束ねて煮込みに入れ、あとで取り出します。"
+ },
+ {
+  "type": "p",
+  "eyebrow": "5 歴史",
+  "title": "香辛料の歴史",
+  "items": [
+   "中世ヨーロッパでは、コショウなどの香辛料は[[金や銀]]に匹敵する価値をもつこともあった",
+   "香辛料を直接手に入れることが、[[大航海時代]]の大きな動機のひとつとなった",
+   "[[1492年]]、コロンブスはインドを目指して西へ向かい、[[アメリカ大陸]]に到達した",
+   "[[1498年]]、ヴァスコ・ダ・ガマが[[喜望峰]]を回ってインドの[[カリカット]]に到達し、インド航路を開いた",
+   "マゼラン一行の世界一周航海も、香辛料の産地である[[モルッカ諸島（香料諸島）]]を目指したものだった",
+   "[[17世紀]]には[[オランダ東インド会社]]がモルッカ諸島の香辛料貿易を独占した",
+   "日本では、奈良時代の[[正倉院]]の宝物のなかに、薬物として[[コショウ]]が収められている"
+  ],
+  "note": "<b>2人の航海者：</b>コロンブス（1492年・西回り・アメリカ大陸）とヴァスコ・ダ・ガマ（1498年・喜望峰回り・インド）。年と向かった方角で区別します。"
+ }
+];
+</script>
+<script>
+/* ---------- 学習記録 ---------- */
+const LS = 'spiceReview.v1';
+function todayKey(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+function loadLog(){ try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e){ return {}; } }
+function saveLog(){ try { localStorage.setItem(LS, JSON.stringify(LOG)); } catch(e){} }
+const LOG = loadLog();
+const TK = todayKey();
+if(!LOG[TK]) LOG[TK] = { sec:0, opens:0, visits:0, first:new Date().toTimeString().slice(0,5), last:'' };
+LOG[TK].visits++;
+LOG[TK].last = new Date().toTimeString().slice(0,5);
+saveLog();
+
+function fmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+const tmrEl = document.getElementById('tmr');
+function paintTimer(){ tmrEl.textContent = fmt(LOG[TK].sec); }
+paintTimer();
+setInterval(()=>{
+  if(document.hidden) return;
+  LOG[TK].sec++;
+  LOG[TK].last = new Date().toTimeString().slice(0,5);
+  paintTimer();
+  if(LOG[TK].sec % 5 === 0) saveLog();
+}, 1000);
+window.addEventListener('beforeunload', saveLog);
+document.addEventListener('visibilitychange', saveLog);
+
+/* ---------- スライド描画 ---------- */
+const slideEl = document.getElementById('slide');
+const dotsEl = document.getElementById('dots');
+let idx = 0;
+function blanks(t){
+  return String(t).replace(/\[\[(.+?)\]\]/g, (m,a)=>'<span class="blank" tabindex="0" role="button" aria-label="空欄">'+a+'</span>');
+}
+const li = arr => arr.map(t => '<li>'+blanks(t)+'</li>').join('');
+
+function render(){
+  const s = SLIDES[idx]; let h='';
+  if(s.type === 'cover'){
+    h = '<div class="cover"><div class="sub">'+s.sub+'</div><h1>'+s.title+'</h1>'
+      + '<div class="idx">'+s.index.join('<br>')+'</div>'
+      + '<div class="howto">'+s.howto+'</div></div>';
+  } else {
+    h += '<div class="eyebrow">'+s.eyebrow+'</div><h2>'+s.title+'</h2>';
+    if(s.lead) h += '<p class="lead">'+blanks(s.lead)+'</p>';
+    if(s.type === 'p'){ h += '<ul>'+li(s.items)+'</ul>'; }
+    else if(s.type === 'tbl'){
+      h += '<div class="tblwrap"><table><thead><tr>'+s.head.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'
+         + s.rows.map(r=>'<tr>'+r.map(c=>'<td>'+blanks(c)+'</td>').join('')+'</tr>').join('')
+         + '</tbody></table></div>';
+    }
+    if(s.note) h += '<div class="note">'+s.note+'</div>';
+  }
+  slideEl.innerHTML = h;
+  document.getElementById('cur').textContent = idx+1;
+  [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active', i===idx));
+  document.getElementById('prev').disabled = (idx===0);
+  document.getElementById('next').disabled = (idx===SLIDES.length-1);
+  slideEl.querySelectorAll('.blank').forEach(b=>{
+    const open = ()=>{ if(b.classList.contains('open')) return; b.classList.add('open'); LOG[TK].opens++; saveLog(); };
+    b.addEventListener('click', open);
+    b.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
+  });
+  window.scrollTo({top:0,behavior:'instant'});
+}
+document.getElementById('tot').textContent = SLIDES.length;
+SLIDES.forEach((_,i)=>{
+  const b=document.createElement('button'); b.className='dot';
+  b.setAttribute('aria-label','スライド'+(i+1)); b.onclick=()=>{ idx=i; render(); };
+  dotsEl.appendChild(b);
+});
+document.getElementById('prev').onclick = ()=>{ if(idx>0){ idx--; render(); } };
+document.getElementById('next').onclick = ()=>{ if(idx<SLIDES.length-1){ idx++; render(); } };
+document.getElementById('btnNext').onclick = ()=>{
+  const b = slideEl.querySelector('.blank:not(.open)');
+  if(b){ b.classList.add('open','hint'); LOG[TK].opens++; saveLog();
+    setTimeout(()=>b.classList.remove('hint'),900);
+    b.scrollIntoView({block:'center',behavior:'smooth'}); }
+};
+document.getElementById('btnReset').onclick = ()=>slideEl.querySelectorAll('.blank').forEach(b=>b.classList.remove('open'));
+document.addEventListener('keydown', e=>{
+  if(document.getElementById('modal').classList.contains('on')) return;
+  if(e.target.classList && e.target.classList.contains('blank')) return;
+  if(e.key==='ArrowRight' && idx<SLIDES.length-1){ idx++; render(); }
+  if(e.key==='ArrowLeft' && idx>0){ idx--; render(); }
+});
+
+/* ---------- 記録表示 ---------- */
+const modal = document.getElementById('modal');
+document.getElementById('btnLog').onclick = ()=>{
+  saveLog();
+  const days = Object.keys(LOG).sort();
+  let rows = '<table><thead><tr><th>日付</th><th>学習時間</th><th>開いたカッコ</th><th>開始</th><th>最終</th></tr></thead><tbody>';
+  let txt = '日付\t学習時間(秒)\t開いたカッコ\t開始\t最終\n';
+  days.forEach(d=>{
+    const v = LOG[d];
+    rows += '<tr><td>'+d+'</td><td>'+fmt(v.sec)+'</td><td>'+v.opens+'</td><td>'+(v.first||'')+'</td><td>'+(v.last||'')+'</td></tr>';
+    txt += d+'\t'+v.sec+'\t'+v.opens+'\t'+(v.first||'')+'\t'+(v.last||'')+'\n';
+  });
+  rows += '</tbody></table>';
+  document.getElementById('logTable').innerHTML = rows;
+  document.getElementById('logText').value = txt;
+  modal.classList.add('on');
+};
+document.getElementById('btnClose').onclick = ()=>modal.classList.remove('on');
+modal.addEventListener('click', e=>{ if(e.target===modal) modal.classList.remove('on'); });
+document.getElementById('btnCopy').onclick = ()=>{
+  const t = document.getElementById('logText'); t.select();
+  try { document.execCommand('copy'); } catch(e){}
+};
+
+render();
+</script>
+</body>
+</html>
